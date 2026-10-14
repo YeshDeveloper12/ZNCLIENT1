@@ -1,0 +1,1 @@
+{"schemaVersion":1,"id":"znclient","version":"${version}","name":"ZNClient","description":"Custom screenshot-inspired client interface and HUD","environment":"client","entrypoints":{"client":["com.znclient.ZNClient"]},"depends":{"fabricloader":">=0.18.0","minecraft":"1.21.11","java":">=21","fabric-api":"*"}}
