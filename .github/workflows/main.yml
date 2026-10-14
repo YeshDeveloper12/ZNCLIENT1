@@ -1,41 +1,44 @@
-name: Build ZN client
 
-'on':
-  workflow_dispatch:
+name: Build ZNClient JAR
+
+on:
   push:
     branches:
-      
-main
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
-      
-name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      
-name: Set up Java 21
-      uses: actions/setup-java@v4
-      with:
-        distribution: temurin
-        java-version: '21'
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
 
-      
-name: Set up Gradle
-      uses: gradle/actions/setup-gradle@v4
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
 
-      
-name: Build Auva Client
-      run: gradle build -x test --stacktrace
+      - name: Build ZNClient
+        run: |
+          if [ -f ./gradlew ]; then
+            chmod +x ./gradlew
+            ./gradlew build --stacktrace
+          else
+            gradle build --stacktrace
+          fi
 
-      
-name: Upload ZN Client JAR
-      if: success()
-      uses: actions/upload-artifact@v4
-      with:
-        name: AuvaClient-1.21.11
-        path: build/libs/*.jar
-        if-no-files-found: error
+      - name: Upload Minecraft JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: ZNClient-JAR
+          path: build/libs/*.jar
+          if-no-files-found: error
